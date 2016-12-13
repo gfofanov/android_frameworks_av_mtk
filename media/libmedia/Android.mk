@@ -112,4 +112,12 @@ LOCAL_CFLAGS += -Werror -Wno-error=deprecated-declarations -Wall
 LOCAL_SANITIZE := unsigned-integer-overflow signed-integer-overflow cfi
 LOCAL_SANITIZE_DIAG := cfi
 
+ifeq ($(MTK_HARDWARE),true)
+LOCAL_SRC_FILES += \
+    mtkaudio_stubs.cpp
+
+# StrongPointer.h
+LOCAL_C_INCLUDES += $(TOP)/frameworks/rs/server
+endif
+
 include $(BUILD_SHARED_LIBRARY)
