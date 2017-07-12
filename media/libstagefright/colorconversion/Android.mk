@@ -16,6 +16,14 @@ LOCAL_SHARED_LIBRARIES := \
 LOCAL_STATIC_LIBRARIES := \
         libyuv_static \
 
+ifeq ($(strip $(BOARD_USES_MTK_HARDWARE)),true)
+LOCAL_C_INCLUDES += \
+        $(TOP)/frameworks/av/media/libstagefright/colorconversion/inc
+
+LOCAL_SHARED_LIBRARIES := \
+	libdpframework
+endif
+
 LOCAL_CFLAGS += -Werror
 LOCAL_SANITIZE := signed-integer-overflow cfi
 LOCAL_SANITIZE_DIAG := cfi

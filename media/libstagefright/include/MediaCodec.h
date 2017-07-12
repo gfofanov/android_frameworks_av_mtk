@@ -55,6 +55,9 @@ using namespace media;
 struct MediaCodec : public AHandler {
     enum ConfigureFlags {
         CONFIGURE_FLAG_ENCODE   = 1,
+#ifdef MTK_HARDWARE
+        CONFIGURE_FLAG_ENABLE_THUMBNAIL_OPTIMIZATION = (0x1<<2),
+#endif
     };
 
     enum BufferFlags {
@@ -63,6 +66,14 @@ struct MediaCodec : public AHandler {
         BUFFER_FLAG_EOS         = 4,
         BUFFER_FLAG_EXTRADATA   = 0x1000,
         BUFFER_FLAG_DATACORRUPT = 0x2000,
+#ifdef MTK_HARDWARE
+        BUFFER_FLAG_ENDOFFRAME  = 8,
+        BUFFER_FLAG_DUMMY       = 16,
+        BUFFER_FLAG_INTERPOLATE_FRAME  = 32,
+        BUFFER_FLAG_INVALID_PTS = 64,
+        BUFFER_FLAG_PARTAIL_FRAME  = 128,
+        BUFFER_FLAG_MULTISLICE = 256,
+#endif
     };
 
     enum {

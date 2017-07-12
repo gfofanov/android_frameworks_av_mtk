@@ -134,6 +134,11 @@ ifeq ($(TARGET_HAS_LEGACY_CAMERA_HAL1),true)
 LOCAL_CFLAGS += -DCAMCORDER_GRALLOC_SOURCE
 endif
 
+ifeq ($(strip $(BOARD_USES_MTK_HARDWARE)),true)
+
+LOCAL_SHARED_LIBRARIES += libdpframework
+endif
+
 LOCAL_CFLAGS += -Wno-multichar -Werror -Wno-error=deprecated-declarations -Wall
 
 # enable experiments only in userdebug and eng builds
