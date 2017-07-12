@@ -126,6 +126,11 @@ LOCAL_SHARED_LIBRARIES += \
 
 LOCAL_EXPORT_SHARED_LIBRARY_HEADERS := libmedia
 
+ifeq ($(strip $(BOARD_USES_MTK_HARDWARE)),true)
+
+LOCAL_SHARED_LIBRARIES += libdpframework
+endif
+
 LOCAL_CFLAGS += -Wno-multichar -Werror -Wno-error=deprecated-declarations -Wall
 
 # enable experiments only in userdebug and eng builds
