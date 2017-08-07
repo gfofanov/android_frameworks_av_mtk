@@ -136,8 +136,6 @@ struct SoftAVC : public SoftVideoEncoderOMXComponent {
 protected:
     virtual ~SoftAVC();
 
-    virtual void onReset();
-
 private:
     enum {
         kNumBuffers = 2,
