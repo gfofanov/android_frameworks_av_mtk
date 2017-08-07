@@ -212,6 +212,35 @@ struct CodecObserver : public BnOMXObserver {
                             omx_msg.u.extended_buffer_data.timestamp);
                     msg->setInt32(
                             "fence_fd", omx_msg.fenceFd);
+#ifdef MTK_HARDWARE
+                    msg->setInt32(
+                            "ticks",
+                            omx_msg.u.extended_buffer_data.token_tick);
+                if( 0x00010000 == (0x00010000 & omx_msg.u.extended_buffer_data.flags) )
+                {
+                   msg->setInt32(
+                            "token_VA",
+                            omx_msg.u.extended_buffer_data.token_VA);
+                    msg->setInt32(
+                            "token_PA",
+                            omx_msg.u.extended_buffer_data.token_PA);
+                    msg->setInt32(
+                            "token_FD",
+                            omx_msg.u.extended_buffer_data.token_FD);
+                }
+                else
+                {
+                    msg->setInt32(
+                            "token_VA",
+                            0);
+                    msg->setInt32(
+                            "token_PA",
+                            0);
+                    msg->setInt32(
+                            "token_FD",
+                            0);
+                }
+#endif
                     break;
                 }
 
@@ -5142,6 +5171,16 @@ status_t ACodec::getPortFormat(OMX_U32 portIndex, sp<AMessage> &notify) {
                             rect.nWidth = videoDef->nFrameWidth;
                             rect.nHeight = videoDef->nFrameHeight;
                         }
+#ifdef MTK_HARDWARE
+                    if (!strncmp(mComponentName.c_str(), "OMX.MTK.", 8) && mOMX->getConfig(
+                            mNode, (OMX_INDEXTYPE) 0x7f00001c /* OMX_IndexVendorMtkOmxVdecGetCropInfo */,
+                            &rect, sizeof(rect)) != OK) {
+                        rect.nLeft = 0;
+                        rect.nTop = 0;
+                        rect.nWidth = videoDef->nFrameWidth;
+                        rect.nHeight = videoDef->nFrameHeight;
+                    }
+#endif
 
                         if (rect.nLeft < 0 ||
                             rect.nTop < 0 ||
