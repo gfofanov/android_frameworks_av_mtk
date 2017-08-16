@@ -486,6 +486,12 @@ status_t MediaCodecSource::initEncoder() {
             ((mFlags & FLAG_PREFER_SOFTWARE_CODEC) ? MediaCodecList::kPreferSoftwareCodecs : 0),
             &matchingCodecs);
 
+    // remove camera tag from mime
+    if (outputMIME.endsWith("_cam")) {
+        outputMIME.erase(outputMIME.size() - 4, 4);
+        mOutputFormat->setString("mime", outputMIME);
+    }
+
     status_t err = NO_INIT;
     for (size_t ix = 0; ix < matchingCodecs.size(); ++ix) {
         mEncoder = MediaCodec::CreateByComponentName(
