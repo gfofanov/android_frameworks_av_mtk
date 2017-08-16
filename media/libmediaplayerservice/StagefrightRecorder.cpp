@@ -1581,7 +1581,7 @@ status_t StagefrightRecorder::setupCameraSource(
         *cameraSource = CameraSource::CreateFromCamera(
                 mCamera, mCameraProxy, mCameraId, mClientName, mClientUid, mClientPid,
                 videoSize, mFrameRate,
-                mPreviewSurface);
+                mPreviewSurface, false); // [*] Decker
     }
     mCamera.clear();
     mCameraProxy.clear();
