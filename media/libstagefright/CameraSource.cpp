@@ -772,16 +772,6 @@ status_t CameraSource::startCameraRecording() {
             }
         }
 
-        err = mCamera->sendCommand(
-            CAMERA_CMD_SET_VIDEO_FORMAT, mEncoderFormat, mEncoderDataSpace);
-
-        // This could happen for CameraHAL1 clients; thus the failure is
-        // not a fatal error
-        if (err != OK) {
-            ALOGW("Failed to set video encoder format/dataspace to %d, %d due to %d",
-                    mEncoderFormat, mEncoderDataSpace, err);
-        }
-
         // Create memory heap to store buffers as VideoNativeMetadata.
         createVideoBufferMemoryHeap(sizeof(VideoNativeHandleMetadata), kDefaultVideoBufferCount);
     }
