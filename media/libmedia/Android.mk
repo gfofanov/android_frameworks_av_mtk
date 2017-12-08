@@ -117,7 +117,7 @@ LOCAL_SRC_FILES += \
     mtkaudio_stubs.cpp
 
 # StrongPointer.h
-LOCAL_C_INCLUDES += $(TOP)/frameworks/rs/server
+LOCAL_C_INCLUDES += $(TOP)/frameworks/rs/cpp/util
 endif
 
 include $(BUILD_SHARED_LIBRARY)
