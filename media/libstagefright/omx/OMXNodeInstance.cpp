@@ -357,6 +357,8 @@ status_t OMXNodeInstance::freeNode(OMXMaster *master) {
             break;
     }
 
+    Mutex::Autolock _l(mLock);
+
     ALOGV("[%x:%s] calling destroyComponentInstance", mNodeID, mName);
     OMX_ERRORTYPE err = master->destroyComponentInstance(
             static_cast<OMX_COMPONENTTYPE *>(mHandle));
@@ -1260,6 +1262,18 @@ status_t OMXNodeInstance::allocateSecureBuffer(
 
     Mutex::Autolock autoLock(mLock);
 
+    if (!mSailed) {
+        ALOGE("b/35467458");
+        android_errorWriteLog(0x534e4554, "35467458");
+        return BAD_VALUE;
+    }
+
+    if (mSecureBufferType[portIndex] == kSecureBufferTypeUnknown) {
+        ALOGE("b/63522818");
+        android_errorWriteLog(0x534e4554, "63522818");
+        return ERROR_UNSUPPORTED;
+    }
+
     BufferMeta *buffer_meta = new BufferMeta(size, portIndex);
 
     OMX_BUFFERHEADERTYPE *header;
@@ -1313,6 +1327,18 @@ status_t OMXNodeInstance::allocateBufferWithBackup(
     Mutex::Autolock autoLock(mLock);
     if (allottedSize > params->size() || portIndex >= NELEM(mNumPortBuffers)) {
         return BAD_VALUE;
+    }
+
+    if (!mSailed) {
+        ALOGE("b/35467458");
+        android_errorWriteLog(0x534e4554, "35467458");
+        return BAD_VALUE;
+    }
+
+    if (mSecureBufferType[portIndex] != kSecureBufferTypeUnknown) {
+        ALOGE("b/63522818");
+        android_errorWriteLog(0x534e4554, "63522818");
+        return ERROR_UNSUPPORTED;
     }
 
     // metadata buffers are not connected cross process; only copy if not meta
